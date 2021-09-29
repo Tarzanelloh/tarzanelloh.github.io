@@ -6,6 +6,8 @@ const printTimeElapsed = (message = '') => {
     console.log(`Time elapsed since last call: ${timeElapsed}ms ${message ? `(${message})` : ''}`)
 }
 
+// printTimeElapsed()
+
 const config = {
     domain: "coders51.eu.auth0.com",
     clientId: "kAadazt98UyBLW8NrYtvxUIBoIhAKiOG"
@@ -24,10 +26,17 @@ const attachListeners = () => {
 }
 
 let auth0 = null;
-let token = null;
-let isAuthenticated = false;
-let user = null;
-let windowLoaded = false
+const configureClient = async () => {
+    // printTimeElapsed('configure client')
+    // auth0 = await createAuth0Client({
+    //     domain: config.domain,
+    //     client_id: config.clientId
+    // });
+    const auth0 = new Auth0Client({
+    domain: config.domain,
+    client_id: config.clientId
+    });
+}
 
 const login = async () => {
     await auth0.loginWithRedirect({
@@ -74,16 +83,49 @@ const injectAuth0Metadata = (user, domain) => {
 }
 
 const updateUI = async () => {
-    isAuthenticated = await auth0.isAuthenticated();
-    try {
-        handleElementsVisibility(isAuthenticated);
-    } catch (e) {
-        console.error("BAU", e)
-    }
+    // printTimeElapsed('start updateUI')
+    const isAuthenticated = await auth0.isAuthenticated();
+    handleElementsVisibility(isAuthenticated);
+    // const isAuthenticated = true
+    // console.log({ isAuthenticated })
     if (!isAuthenticated) {
         logout();
     } else {
+        // use full if you need to make requests using an auth0 token
+        // const token = await auth0.getTokenSilently();
+        // const token = "Jl-jWylwZIGC6vZVwryLWKeLWtWFEHyT"
+
         const user = await auth0.getUser();
+        // printTimeElapsed('got auth0 data')
+        // const user = {
+        //     email: "lmenghini@coders51.com",
+        //     email_verified: true,
+        //     'https://coders51.com/roles': ['admin'],
+        //     'https://uhubs.co.uk/metadata': {
+        //         user: {
+        //             'Member-page': "https://www.coders51.com/",
+        //             'Signup Date': "September 5, 2021",
+        //             company: "coders51",
+        //             'first-name': "Luca",
+        //             'job-title': "Human Machine Interface",
+        //             'last-name': "Menghini",
+        //             location: "Rovereto",
+        //             mood: "adequate",
+        //             performance: "Mostly adequate",
+        //         },
+        //         app: {
+        //             role: 'Team member',
+        //             'ms-uuid': "I'm just a simple Memberstack uuid"
+        //         }
+        //     },
+        //     name: "lmenghini@coders51.com",
+        //     nickname: "lmenghini",
+        //     picture: "https://s.gravatar.com/avatar/b41daebfece6d659b089aa69c65ac7a5?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flm.png",
+        //     sub: "auth0|610cfc205ea8ba00697f977e",
+        //     updated_at: "2021-09-27T16:49:40.854Z",
+        // }
+        // console.log({ user, token });
+        // printTimeElapsed('after handleElementsVisibility')
         populateAuth0Element(user, 'picture', 'srcset');
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
         populateAuth0Element(user, 'name');
@@ -93,9 +135,6 @@ const updateUI = async () => {
 
 
 const handleElementsVisibility = (isAuthenticated) => {
-    if (!windowLoaded) {
-        return
-    }
     const visibilityAttribute = 'data-ms-content'
     const elements = getElementsByAttribute(visibilityAttribute)
     elements.forEach(el => {
@@ -139,39 +178,40 @@ const getElementsByAttributeValue = (attribute, value) => {
 }
 
 const handleAuth0 = async () => {
-    if (token) {
+    if (auth0) {
         return
     }
+    // console.log("Creating Auth0 client")
+    // await configureClient();
     auth0 = new Auth0Client({
         domain: config.domain,
         client_id: config.clientId
     });
-    auth0.getTokenSilently().then(t => {
-        token = t;
-        const query = window.location.search;
-        if (query.includes('code=') && query.includes('state=')) {
-            // Process the login state
-            // Use replaceState to redirect the user away and remove the querystring parameters
-            auth0.handleRedirectCallback().then(_ => window.history.replaceState({}, document.title, window.location.pathname));
-        }
-        updateUI();
-        }).catch(e => {
-            if (e.error === 'login_required') {
-                logout()
-            } else {
-                console.error("Error while retrieving token:", e)
-            }
-        })
+    token = auth0.getTokenSilently()
+    // printTimeElapsed('auth0 client')
+    // console.log("Auth0 client successfully created")
+
+    // check for the code and state parameters
+    const query = window.location.search;
+    if (query.includes('code=') && query.includes('state=')) {
+
+        // Process the login state
+        await auth0.handleRedirectCallback();
+
+        // Use replaceState to redirect the user away and remove the querystring parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    updateUI();
 }
 
 const bootstrapIntegration = async () => {
     handleAuth0()
     window.onload = () => {
-        windowLoaded = true
-        handleElementsVisibility(isAuthenticated);
-        attachListeners();
-        handleAuth0();
+        handleAuth0()
+        attachListeners()
     }
 }
 
 bootstrapIntegration()
+// window.onload = handleAuth0
+// handleAuth0()
