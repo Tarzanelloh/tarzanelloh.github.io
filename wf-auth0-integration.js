@@ -27,6 +27,9 @@ const attachListeners = () => {
 
 let auth0 = null;
 let token = null;
+let isAuthenticated = false;
+let user = null;
+
 const configureClient = async () => {
     // printTimeElapsed('configure client')
     // auth0 = await createAuth0Client({
@@ -85,8 +88,12 @@ const injectAuth0Metadata = (user, domain) => {
 
 const updateUI = async () => {
     // printTimeElapsed('start updateUI')
-    const isAuthenticated = await auth0.isAuthenticated();
-    handleElementsVisibility(isAuthenticated);
+    isAuthenticated = await auth0.isAuthenticated();
+    try {
+        handleElementsVisibility(isAuthenticated);
+    } catch (e) {
+        console.error("BAU", e)
+    }
     // const isAuthenticated = true
     // console.log({ isAuthenticated })
     if (!isAuthenticated) {
@@ -208,8 +215,8 @@ const handleAuth0 = async () => {
 const bootstrapIntegration = async () => {
     handleAuth0()
     window.onload = () => {
-        handleAuth0()
-        attachListeners()
+        handleElementsVisibility(isAuthenticated);
+        attachListeners();
     }
 }
 
