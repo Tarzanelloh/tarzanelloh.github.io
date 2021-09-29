@@ -174,9 +174,9 @@ const getElementsByAttributeValue = (attribute, value) => {
 }
 
 const handleAuth0 = async () => {
-    printTimeElapsed('postonload')
     console.log("Creating Auth0 client")
     await configureClient();
+    printTimeElapsed('auth0 client')
     console.log("Auth0 client successfully created")
 
     // check for the code and state parameters
@@ -192,7 +192,7 @@ const handleAuth0 = async () => {
     updateUI();
 }
 
-printTimeElapsed('preonload')
+printTimeElapsed('prehandleAuth0')
 // window.onload = handleAuth0
 // handleAuth0()
 try {
