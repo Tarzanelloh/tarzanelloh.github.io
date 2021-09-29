@@ -183,7 +183,7 @@ const handleAuth0 = async () => {
     }
     // console.log("Creating Auth0 client")
     // await configureClient();
-    const auth0 = new Auth0Client({
+    auth0 = new Auth0Client({
         domain: config.domain,
         client_id: config.clientId
     });
