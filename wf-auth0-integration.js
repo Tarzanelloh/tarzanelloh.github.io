@@ -1,5 +1,3 @@
-
-let auth0Initialized = false;
 let time = Date.now();
 
 const printTimeElapsed = (message = '') => {
@@ -34,7 +32,6 @@ const configureClient = async () => {
         domain: config.domain,
         client_id: config.clientId
     });
-    auth0Initialized = true;
 }
 
 const login = async () => {
@@ -177,7 +174,7 @@ const getElementsByAttributeValue = (attribute, value) => {
 }
 
 const handleAuth0 = async () => {
-    if (auth0Initialized) {
+    if (auth0) {
         return
     }
     console.log("Creating Auth0 client")
