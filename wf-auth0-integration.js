@@ -25,16 +25,6 @@ const attachListeners = () => {
     }
 }
 
-let auth0 = null;
-const configureClient = async () => {
-    printTimeElapsed('configure client')
-    auth0 = await createAuth0Client({
-        domain: config.domain,
-        client_id: config.clientId
-    });
-    printTimeElapsed('configure client end')
-}
-
 const login = async () => {
     await auth0.loginWithRedirect({
         redirect_uri: window.location.origin + '/coders51-b'
@@ -79,21 +69,24 @@ const injectAuth0Metadata = (user, domain) => {
     });
 }
 
-const updateUI = async () => {
-    // printTimeElapsed('start updateUI')
-    const isAuthenticated = await auth0.isAuthenticated();
-    if (!isAuthenticated) {
-        logout();
-    } else {
-        // use full if you need to make requests using an auth0 token
-        // const token = await auth0.getTokenSilently();
-        const user = await auth0.getUser();
-        handleElementsVisibility(isAuthenticated);
+const updateUI = () => {
+    handleElementsVisibility(isAuthenticated);
+    if (user) {
         populateAuth0Element(user, 'picture', 'srcset');
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
         populateAuth0Element(user, 'name');
-        return;
     }
+    return;
+}
+
+const getElementsByAttribute = (attribute) => {
+    const nodes = document.body.querySelectorAll(`[${attribute}]`);
+    return Array.from(nodes);
+}
+
+const getElementsByAttributeValue = (attribute, value) => {
+    const nodes = document.body.querySelectorAll(`[${attribute}="${value}"]`);
+    return Array.from(nodes);
 }
 
 
@@ -130,14 +123,28 @@ const isLoggedInCondition = (attributeVal) => {
     return potentialValues.includes(attributeVal)
 }
 
-const getElementsByAttribute = (attribute) => {
-    const nodes = document.body.querySelectorAll(`[${attribute}]`);
-    return Array.from(nodes);
+let auth0Init = false;
+let domInit = false;
+let domManipulated = false;
+let auth0 = null;
+let token = null;
+let user = null;
+let isAuthenticated = null;
+const configureClient = async () => {
+    printTimeElapsed('configure client')
+    auth0 = await createAuth0Client({
+        domain: config.domain,
+        client_id: config.clientId
+    });
+    printTimeElapsed('configure client end')
 }
 
-const getElementsByAttributeValue = (attribute, value) => {
-    const nodes = document.body.querySelectorAll(`[${attribute}="${value}"]`);
-    return Array.from(nodes);
+triggerDOMManipulation = () => {
+    if (auth0Init && domInit && !domManipulated) {
+        attachListeners()
+        updateUI();
+        domManipulated = true;
+    }
 }
 
 const handleAuth0 = async () => {
@@ -156,17 +163,22 @@ const handleAuth0 = async () => {
         // Use replaceState to redirect the user away and remove the querystring parameters
         window.history.replaceState({}, document.title, window.location.pathname);
     }
-    updateUI();
+
+    isAuthenticated = await auth0.isAuthenticated();
+    if (!isAuthenticated) {
+        logout();
+    } else {
+        user = await auth0.getUser();
+    }
+    auth0Init = true;
+    triggerDOMManipulation()
 }
 
-const bootstrapIntegration = async () => {
+const bootstrapIntegration = () => {
     handleAuth0()
     window.onload = () => {
-        handleAuth0()
-        attachListeners()
+        triggerDOMManipulation()
     }
 }
 
 bootstrapIntegration()
-// window.onload = handleAuth0
-// handleAuth0()
