@@ -82,7 +82,7 @@ const updateUI = async () => {
     // printTimeElapsed('start updateUI')
     const isAuthenticated = await auth0.isAuthenticated();
     // const isAuthenticated = true
-    console.log({ isAuthenticated })
+    // console.log({ isAuthenticated })
     if (!isAuthenticated) {
         logout();
     } else {
@@ -119,7 +119,7 @@ const updateUI = async () => {
         //     sub: "auth0|610cfc205ea8ba00697f977e",
         //     updated_at: "2021-09-27T16:49:40.854Z",
         // }
-        console.log({ user, token });
+        // console.log({ user, token });
         handleElementsVisibility(isAuthenticated);
         // printTimeElapsed('after handleElementsVisibility')
         populateAuth0Element(user, 'picture', 'srcset');
@@ -177,10 +177,10 @@ const handleAuth0 = async () => {
     if (auth0) {
         return
     }
-    console.log("Creating Auth0 client")
+    // console.log("Creating Auth0 client")
     await configureClient();
     // printTimeElapsed('auth0 client')
-    console.log("Auth0 client successfully created")
+    // console.log("Auth0 client successfully created")
 
     // check for the code and state parameters
     const query = window.location.search;
