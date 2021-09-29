@@ -177,6 +177,9 @@ const getElementsByAttributeValue = (attribute, value) => {
 }
 
 const handleAuth0 = async () => {
+    if (auth0Initialized) {
+        return
+    }
     console.log("Creating Auth0 client")
     await configureClient();
     printTimeElapsed('auth0 client')
@@ -197,10 +200,8 @@ const handleAuth0 = async () => {
 
 const bootstapIntegration = async () => {
     window.onload = attachListeners
-    await handleAuth0()
-    if (!auth0Initialized) {
-        window.onload = handleAuth0
-    }
+    handleAuth0()
+    window.onload = handleAuth0
 }
 printTimeElapsed('prehandleAuth0')
 
