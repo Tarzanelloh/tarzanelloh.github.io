@@ -1,3 +1,12 @@
+let time = Date.now()
+
+const printTimeElapsed() {
+    console.log('Time elapsed since last call: ' + Date.now() - time + 'ms')
+    time = Date.now()
+}
+
+printTimeElapsed()
+
 const config = {
     domain: "coders51.eu.auth0.com",
     clientId: "kAadazt98UyBLW8NrYtvxUIBoIhAKiOG"
@@ -69,6 +78,7 @@ const injectAuth0Metadata = (user, domain) => {
 }
 
 const updateUI = async () => {
+    printTimeElapsed()
     // const isAuthenticated = await auth0.isAuthenticated();
     const isAuthenticated = true
     handleElementsVisibility(isAuthenticated);
