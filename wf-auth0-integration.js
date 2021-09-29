@@ -28,9 +28,13 @@ const attachListeners = () => {
 let auth0 = null;
 const configureClient = async () => {
     // printTimeElapsed('configure client')
-    auth0 = await createAuth0Client({
-        domain: config.domain,
-        client_id: config.clientId
+    // auth0 = await createAuth0Client({
+    //     domain: config.domain,
+    //     client_id: config.clientId
+    // });
+    const auth0 = new Auth0Client({
+    domain: config.domain,
+    client_id: config.clientId
     });
 }
 
@@ -178,7 +182,11 @@ const handleAuth0 = async () => {
         return
     }
     // console.log("Creating Auth0 client")
-    await configureClient();
+    // await configureClient();
+    const auth0 = new Auth0Client({
+        domain: config.domain,
+        client_id: config.clientId
+    });
     // printTimeElapsed('auth0 client')
     // console.log("Auth0 client successfully created")
 
