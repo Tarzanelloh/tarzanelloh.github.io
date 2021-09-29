@@ -1,6 +1,6 @@
 let time = Date.now()
 
-const printTimeElapsed() {
+const printTimeElapsed = () => {
     console.log('Time elapsed since last call: ' + Date.now() - time + 'ms')
     time = Date.now()
 }
