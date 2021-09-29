@@ -18,16 +18,16 @@ const attachListeners = () => {
 let auth0 = null;
 const configureClient = async () => {
     attachListeners();
-    auth0 = await createAuth0Client({
-        domain: config.domain,
-        client_id: config.clientId
-    });
+    // auth0 = await createAuth0Client({
+    //     domain: config.domain,
+    //     client_id: config.clientId
+    // });
 }
 
 const login = async () => {
-    await auth0.loginWithRedirect({
-        redirect_uri: window.location.origin + '/coders51-b'
-    })
+    // await auth0.loginWithRedirect({
+    //     redirect_uri: window.location.origin + '/coders51-b'
+    // })
 }
 
 const isLoggedOut = () => {
@@ -41,9 +41,9 @@ const isLoggedOut = () => {
 
 const logout = (logoutPath = '/coders51-a') => {
     if (!isLoggedOut()) {
-        auth0.logout({
-            returnTo: window.location.origin + logoutPath
-        });
+        // auth0.logout({
+        //     returnTo: window.location.origin + logoutPath
+        // });
     }
 }
 
