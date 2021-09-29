@@ -146,19 +146,21 @@ const handleAuth0 = async () => {
         domain: config.domain,
         client_id: config.clientId
     });
-    token = await auth0.getTokenSilently()
+    auth0.getTokenSilently().then(t => {
+        token = t;
+        const query = window.location.search;
+        if (query.includes('code=') && query.includes('state=')) {
 
-    // check for the code and state parameters
-    const query = window.location.search;
-    if (query.includes('code=') && query.includes('state=')) {
+            // Process the login state
+            await auth0.handleRedirectCallback();
 
-        // Process the login state
-        await auth0.handleRedirectCallback();
-
-        // Use replaceState to redirect the user away and remove the querystring parameters
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-    updateUI();
+            // Use replaceState to redirect the user away and remove the querystring parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        updateUI();
+        }).catch(e => {
+            console.error("Error while retrieving token:", e)
+        })
 }
 
 const bootstrapIntegration = async () => {
@@ -167,6 +169,7 @@ const bootstrapIntegration = async () => {
         windowLoaded = true
         handleElementsVisibility(isAuthenticated);
         attachListeners();
+        handleAuth0();
     }
 }
 
