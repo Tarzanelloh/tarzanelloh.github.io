@@ -188,7 +188,7 @@ const handleAuth0 = async () => {
         domain: config.domain,
         client_id: config.clientId
     });
-    token = auth0.getTokenSilently()
+    token = await auth0.getTokenSilently()
     // printTimeElapsed('auth0 client')
     // console.log("Auth0 client successfully created")
 
