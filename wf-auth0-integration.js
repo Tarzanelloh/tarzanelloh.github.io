@@ -3,7 +3,7 @@ let time = Date.now()
 const printTimeElapsed = (message = '') => {
     const timeElapsed = "" + (Date.now() - time)
     time = Date.now()
-    console.log('Time elapsed since last call: ' + timeElapsed + 'ms' + message ? `(${message})` : '')
+    console.log(`Time elapsed since last call: ${timeElapsed}ms ${message ? `(${message})` : ''}`)
 }
 
 printTimeElapsed()
