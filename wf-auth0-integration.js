@@ -195,11 +195,15 @@ const handleAuth0 = async () => {
     updateUI();
 }
 
+const bootstapIntegration = async () => {
+    window.onload = attachListeners
+    await handleAuth0()
+    if (!auth0Initialized) {
+        window.onload = handleAuth0
+    }
+}
 printTimeElapsed('prehandleAuth0')
+
+bootstapIntegration()
 // window.onload = handleAuth0
 // handleAuth0()
-await handleAuth0()
-window.onload = attachListeners
-if (!auth0Initialized) {
-    window.onload = handleAuth0
-}
