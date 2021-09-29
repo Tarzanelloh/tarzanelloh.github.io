@@ -27,11 +27,12 @@ const attachListeners = () => {
 
 let auth0 = null;
 const configureClient = async () => {
-    // printTimeElapsed('configure client')
+    printTimeElapsed('configure client')
     auth0 = await createAuth0Client({
         domain: config.domain,
         client_id: config.clientId
     });
+    printTimeElapsed('configure client end')
 }
 
 const login = async () => {
