@@ -79,10 +79,9 @@ const injectAuth0Metadata = (user, domain) => {
 }
 
 const updateUI = async () => {
-    printTimeElapsed()
+    printTimeElapsed('start updateUI')
     const isAuthenticated = await auth0.isAuthenticated();
     // const isAuthenticated = true
-    handleElementsVisibility(isAuthenticated);
     console.log({ isAuthenticated })
     if (!isAuthenticated) {
         logout();
@@ -92,6 +91,7 @@ const updateUI = async () => {
         // const token = "Jl-jWylwZIGC6vZVwryLWKeLWtWFEHyT"
 
         const user = await auth0.getUser();
+        printTimeElapsed('got auth0 data')
         // const user = {
         //     email: "lmenghini@coders51.com",
         //     email_verified: true,
@@ -120,6 +120,8 @@ const updateUI = async () => {
         //     updated_at: "2021-09-27T16:49:40.854Z",
         // }
         console.log({ user, token });
+        handleElementsVisibility(isAuthenticated);
+        printTimeElapsed('after handleElementsVisibility')
         populateAuth0Element(user, 'picture', 'srcset');
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
         populateAuth0Element(user, 'name');
