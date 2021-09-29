@@ -192,4 +192,5 @@ const handleAuth0 = async () => {
 
 printTimeElapsed('preonload')
 // window.onload = handleAuth0
-handleAuth0()
+// handleAuth0()
+document.onload = handleAuth0
