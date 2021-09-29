@@ -156,7 +156,11 @@ const handleAuth0 = async () => {
         }
         updateUI();
         }).catch(e => {
-            console.error("Error while retrieving token:", e)
+            if (e.error === 'login_required') {
+                logout()
+            } else {
+                console.error("Error while retrieving token:", e)
+            }
         })
 }
 
