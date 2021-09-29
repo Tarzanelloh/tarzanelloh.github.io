@@ -93,39 +93,7 @@ const updateUI = async () => {
     } else {
         // use full if you need to make requests using an auth0 token
         // const token = await auth0.getTokenSilently();
-        // const token = "Jl-jWylwZIGC6vZVwryLWKeLWtWFEHyT"
-
         const user = await auth0.getUser();
-        // printTimeElapsed('got auth0 data')
-        // const user = {
-        //     email: "lmenghini@coders51.com",
-        //     email_verified: true,
-        //     'https://coders51.com/roles': ['admin'],
-        //     'https://uhubs.co.uk/metadata': {
-        //         user: {
-        //             'Member-page': "https://www.coders51.com/",
-        //             'Signup Date': "September 5, 2021",
-        //             company: "coders51",
-        //             'first-name': "Luca",
-        //             'job-title': "Human Machine Interface",
-        //             'last-name': "Menghini",
-        //             location: "Rovereto",
-        //             mood: "adequate",
-        //             performance: "Mostly adequate",
-        //         },
-        //         app: {
-        //             role: 'Team member',
-        //             'ms-uuid': "I'm just a simple Memberstack uuid"
-        //         }
-        //     },
-        //     name: "lmenghini@coders51.com",
-        //     nickname: "lmenghini",
-        //     picture: "https://s.gravatar.com/avatar/b41daebfece6d659b089aa69c65ac7a5?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Flm.png",
-        //     sub: "auth0|610cfc205ea8ba00697f977e",
-        //     updated_at: "2021-09-27T16:49:40.854Z",
-        // }
-        // console.log({ user, token });
-        // printTimeElapsed('after handleElementsVisibility')
         populateAuth0Element(user, 'picture', 'srcset');
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
         populateAuth0Element(user, 'name');
@@ -182,13 +150,7 @@ const handleAuth0 = async () => {
         return
     }
     // console.log("Creating Auth0 client")
-    // await configureClient();
-    auth0 = new Auth0Client({
-        domain: config.domain,
-        client_id: config.clientId
-    });
-    token = auth0.getTokenSilently()
-    // printTimeElapsed('auth0 client')
+    await configureClient();
     // console.log("Auth0 client successfully created")
 
     // check for the code and state parameters
