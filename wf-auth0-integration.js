@@ -171,6 +171,7 @@ const getElementsByAttributeValue = (attribute, value) => {
 }
 
 const handleAuth0 = async () => {
+    printTimeElapsed()
     console.log("Creating Auth0 client")
     await configureClient();
     console.log("Auth0 client successfully created")
@@ -188,5 +189,5 @@ const handleAuth0 = async () => {
     updateUI();
 }
 
-
+printTimeElapsed()
 window.onload = handleAuth0
