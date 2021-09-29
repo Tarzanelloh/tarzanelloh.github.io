@@ -26,6 +26,7 @@ const attachListeners = () => {
 }
 
 let auth0 = null;
+let token = null;
 const configureClient = async () => {
     // printTimeElapsed('configure client')
     // auth0 = await createAuth0Client({
@@ -85,13 +86,14 @@ const injectAuth0Metadata = (user, domain) => {
 const updateUI = async () => {
     // printTimeElapsed('start updateUI')
     const isAuthenticated = await auth0.isAuthenticated();
+    handleElementsVisibility(isAuthenticated);
     // const isAuthenticated = true
     // console.log({ isAuthenticated })
     if (!isAuthenticated) {
         logout();
     } else {
         // use full if you need to make requests using an auth0 token
-        const token = await auth0.getTokenSilently();
+        // const token = await auth0.getTokenSilently();
         // const token = "Jl-jWylwZIGC6vZVwryLWKeLWtWFEHyT"
 
         const user = await auth0.getUser();
@@ -124,7 +126,6 @@ const updateUI = async () => {
         //     updated_at: "2021-09-27T16:49:40.854Z",
         // }
         // console.log({ user, token });
-        handleElementsVisibility(isAuthenticated);
         // printTimeElapsed('after handleElementsVisibility')
         populateAuth0Element(user, 'picture', 'srcset');
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
@@ -187,6 +188,7 @@ const handleAuth0 = async () => {
         domain: config.domain,
         client_id: config.clientId
     });
+    token = auth0.getTokenSilently()
     // printTimeElapsed('auth0 client')
     // console.log("Auth0 client successfully created")
 
