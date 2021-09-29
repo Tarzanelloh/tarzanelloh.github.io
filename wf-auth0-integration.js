@@ -1,9 +1,9 @@
 let time = Date.now()
 
-const printTimeElapsed = () => {
+const printTimeElapsed = (message = '') => {
     const timeElapsed = "" + (Date.now() - time)
     time = Date.now()
-    console.log('Time elapsed since last call: ' + timeElapsed + 'ms')
+    console.log('Time elapsed since last call: ' + timeElapsed + 'ms' + message ? `(${message})` : '')
 }
 
 printTimeElapsed()
@@ -171,7 +171,7 @@ const getElementsByAttributeValue = (attribute, value) => {
 }
 
 const handleAuth0 = async () => {
-    printTimeElapsed()
+    printTimeElapsed('postonload')
     console.log("Creating Auth0 client")
     await configureClient();
     console.log("Auth0 client successfully created")
@@ -189,5 +189,5 @@ const handleAuth0 = async () => {
     updateUI();
 }
 
-printTimeElapsed()
+printTimeElapsed('preonload')
 window.onload = handleAuth0
