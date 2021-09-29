@@ -89,7 +89,7 @@ const updateUI = async () => {
     if (!isAuthenticated) {
         logout();
     } else {
-        //use full if you need to make requests using an auth0 token
+        // use full if you need to make requests using an auth0 token
         const token = await auth0.getTokenSilently();
         // const token = "Jl-jWylwZIGC6vZVwryLWKeLWtWFEHyT"
 
@@ -198,7 +198,7 @@ const handleAuth0 = async () => {
 printTimeElapsed('prehandleAuth0')
 // window.onload = handleAuth0
 // handleAuth0()
-handleAuth0()
+await handleAuth0()
 window.onload = attachListeners
 if (!auth0Initialized) {
     window.onload = handleAuth0
