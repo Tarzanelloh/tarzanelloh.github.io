@@ -198,13 +198,15 @@ const handleAuth0 = async () => {
     updateUI();
 }
 
-const bootstapIntegration = async () => {
-    window.onload = attachListeners
+const bootstrapIntegration = async () => {
     handleAuth0()
-    window.onload = handleAuth0
+    window.onload = () => {
+        handleAuth0()
+        attachListeners()
+    }
 }
 printTimeElapsed('prehandleAuth0')
 
-bootstapIntegration()
+bootstrapIntegration()
 // window.onload = handleAuth0
 // handleAuth0()
