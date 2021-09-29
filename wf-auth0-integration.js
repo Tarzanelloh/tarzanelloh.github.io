@@ -28,8 +28,6 @@ const attachListeners = () => {
 let auth0 = null;
 const configureClient = async () => {
     printTimeElapsed('configure client')
-    attachListeners();
-    printTimeElapsed('attachlisteners')
     auth0 = await createAuth0Client({
         domain: config.domain,
         client_id: config.clientId
@@ -203,3 +201,5 @@ try {
     console.log('documentonload')
     document.onload = handleAuth0
 }
+
+window.onload = attachListeners
