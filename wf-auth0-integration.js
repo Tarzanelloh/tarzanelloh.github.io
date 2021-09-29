@@ -1,4 +1,6 @@
-let time = Date.now()
+
+let auth0Initialized = false;
+let time = Date.now();
 
 const printTimeElapsed = (message = '') => {
     const timeElapsed = "" + (Date.now() - time)
@@ -32,6 +34,7 @@ const configureClient = async () => {
         domain: config.domain,
         client_id: config.clientId
     });
+    auth0Initialized = true;
 }
 
 const login = async () => {
@@ -203,3 +206,6 @@ try {
 }
 
 window.onload = attachListeners
+if (!initializedAuth0) {
+    window.onload = handleAuth0
+}
