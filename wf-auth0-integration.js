@@ -139,7 +139,7 @@ const getElementsByAttributeValue = (attribute, value) => {
 }
 
 const handleAuth0 = async () => {
-    if (auth0) {
+    if (token) {
         return
     }
     auth0 = new Auth0Client({
