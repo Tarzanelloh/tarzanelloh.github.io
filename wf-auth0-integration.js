@@ -140,6 +140,7 @@ const configureClient = async () => {
 }
 
 triggerDOMManipulation = () => {
+    console.log(auth0Init, domInit, domManipulated)
     if (auth0Init && domInit && !domManipulated) {
         attachListeners()
         updateUI();
@@ -177,6 +178,7 @@ const handleAuth0 = async () => {
 const bootstrapIntegration = () => {
     handleAuth0()
     window.onload = () => {
+        domInit = true
         triggerDOMManipulation()
     }
 }
