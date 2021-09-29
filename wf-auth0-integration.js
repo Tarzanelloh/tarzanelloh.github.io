@@ -81,15 +81,13 @@ const injectAuth0Metadata = (user, domain) => {
 const updateUI = async () => {
     // printTimeElapsed('start updateUI')
     const isAuthenticated = await auth0.isAuthenticated();
-    handleElementsVisibility(isAuthenticated);
-    // const isAuthenticated = true
-    // console.log({ isAuthenticated })
     if (!isAuthenticated) {
         logout();
     } else {
         // use full if you need to make requests using an auth0 token
         // const token = await auth0.getTokenSilently();
         const user = await auth0.getUser();
+        handleElementsVisibility(isAuthenticated);
         populateAuth0Element(user, 'picture', 'srcset');
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
         populateAuth0Element(user, 'name');
