@@ -6,7 +6,7 @@ const printTimeElapsed = (message = '') => {
     console.log(`Time elapsed since last call: ${timeElapsed}ms ${message ? `(${message})` : ''}`)
 }
 
-printTimeElapsed()
+// printTimeElapsed()
 
 const config = {
     domain: "coders51.eu.auth0.com",
@@ -27,7 +27,7 @@ const attachListeners = () => {
 
 let auth0 = null;
 const configureClient = async () => {
-    printTimeElapsed('configure client')
+    // printTimeElapsed('configure client')
     auth0 = await createAuth0Client({
         domain: config.domain,
         client_id: config.clientId
@@ -79,7 +79,7 @@ const injectAuth0Metadata = (user, domain) => {
 }
 
 const updateUI = async () => {
-    printTimeElapsed('start updateUI')
+    // printTimeElapsed('start updateUI')
     const isAuthenticated = await auth0.isAuthenticated();
     // const isAuthenticated = true
     console.log({ isAuthenticated })
@@ -91,7 +91,7 @@ const updateUI = async () => {
         // const token = "Jl-jWylwZIGC6vZVwryLWKeLWtWFEHyT"
 
         const user = await auth0.getUser();
-        printTimeElapsed('got auth0 data')
+        // printTimeElapsed('got auth0 data')
         // const user = {
         //     email: "lmenghini@coders51.com",
         //     email_verified: true,
@@ -121,7 +121,7 @@ const updateUI = async () => {
         // }
         console.log({ user, token });
         handleElementsVisibility(isAuthenticated);
-        printTimeElapsed('after handleElementsVisibility')
+        // printTimeElapsed('after handleElementsVisibility')
         populateAuth0Element(user, 'picture', 'srcset');
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
         populateAuth0Element(user, 'name');
@@ -179,7 +179,7 @@ const handleAuth0 = async () => {
     }
     console.log("Creating Auth0 client")
     await configureClient();
-    printTimeElapsed('auth0 client')
+    // printTimeElapsed('auth0 client')
     console.log("Auth0 client successfully created")
 
     // check for the code and state parameters
@@ -202,7 +202,6 @@ const bootstrapIntegration = async () => {
         attachListeners()
     }
 }
-printTimeElapsed('prehandleAuth0')
 
 bootstrapIntegration()
 // window.onload = handleAuth0
