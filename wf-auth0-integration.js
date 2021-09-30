@@ -70,7 +70,7 @@ const injectAuth0Metadata = (user, domain) => {
 
 const updateUI = () => {
     const propertyMap = new Map([
-        ["members", isAuthenticated],
+        // ["members", isAuthenticated],
         ["loggedIn", isAuthenticated],
         ["hasHomepage", !!(user && user['app_metadata'] && user['app_metadata']['homepage'])]
     ])
