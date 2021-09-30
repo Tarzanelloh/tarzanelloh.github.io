@@ -70,7 +70,13 @@ const injectAuth0Metadata = (user, domain) => {
 }
 
 const updateUI = () => {
-    handleElementsVisibility(isAuthenticated);
+    const propertyMap = new Map([
+        ["members", isAuthenticated],
+        ["isLoggedIn", isAuthenticated],
+        ["hasHomepage", !!(user && user['app_metadata'] && user['app_metadata']['homepage'])]
+    ])
+    handleElementsVisibility(propertyMap);
+    handleElementsVisibility(propertyMap, 'data-auth0-content');
     if (user) {
         populateAuth0Element(user, 'picture', 'srcset');
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
@@ -90,37 +96,32 @@ const getElementsByAttributeValue = (attribute, value) => {
 }
 
 
-const handleElementsVisibility = (isAuthenticated) => {
-    const visibilityAttribute = 'data-ms-content'
+
+
+const handleElementsVisibility = (propertyMap, visibilityAttribute = 'data-ms-content') => {
     const elements = getElementsByAttribute(visibilityAttribute)
     elements.forEach(el => {
         let attributeVal = el.getAttribute(visibilityAttribute).trim();
-        if (!isElementVisible(attributeVal, isAuthenticated)) {
-            printTimeElapsed('login button removed')
-            el.style.display = "none"
+        if (!isElementVisible(attributeVal, propertyMap)) {
+            el.classList.add("d-none")
+        } else {
+            el.classList.remove("d-none")
         }
     })
 }
 
-const isElementVisible = (attributeVal, isAuthenticated) => {
+const isElementVisible = (attributeVal, propertyMap) => {
     if (attributeVal) {
         const isNegation = attributeVal.charAt(0) === "!"
         if (isNegation) {
             attributeVal = attributeVal.substring(1)
         }
-        if (isLoggedInCondition(attributeVal)) {
-            return isNegation ? !isAuthenticated : isAuthenticated
+        if (propertyMap.has(attributeVal)) {
+            const propValue = propertyMap.get(attributeVal)
+            return isNegation ? !propValue : propValue
         }
     }
     return true
-}
-
-const isLoggedInCondition = (attributeVal) => {
-    const potentialValues = [
-        // "members",
-        "loggedIn"
-    ]
-    return potentialValues.includes(attributeVal)
 }
 
 let auth0Init = false;
@@ -130,6 +131,7 @@ let auth0 = null;
 let token = null;
 let user = null;
 let isAuthenticated = null;
+
 const configureClient = async () => {
     printTimeElapsed('configure client')
     auth0 = await createAuth0Client({
