@@ -2,8 +2,7 @@ let time = Date.now();
 
 const printTimeElapsed = (message = '') => {
     const timeElapsed = "" + (Date.now() - time)
-    time = Date.now()
-    console.log(`Time elapsed since last call: ${timeElapsed}ms ${message ? `(${message})` : ''}`)
+    console.log(`Time elapsed since page load: ${timeElapsed}ms ${message ? `(${message})` : ''}`)
 }
 
 // printTimeElapsed()
@@ -106,6 +105,7 @@ const handleElementsVisibility = (propertyMap, visibilityAttribute = 'data-ms-co
             el.classList.add("d-none")
         } else {
             el.classList.remove("d-none")
+            printTimeElapsed(`removed ${el.id}`)
         }
     })
 }
