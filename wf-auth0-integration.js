@@ -22,6 +22,11 @@ const attachListeners = () => {
     if (logoutButton) {
         logoutButton.addEventListener('click', () => logout())
     }
+
+    const navigateToDashboardButton = document.querySelector('[auth0-dashboard]')
+    if (navigateToDashboardButton) {
+        navigateToDashboardButton.addEventListener('click', () => navigateToDashboard())
+    }
 }
 
 const login = async () => {
@@ -33,6 +38,7 @@ const login = async () => {
 const isLoggedOut = () => {
     const invalidLogoutPaths = [
         '/coders51-b',
+        '/home-profile'
     ];
 
     const currentLocation = window.location.pathname
@@ -45,6 +51,10 @@ const logout = (logoutPath = '/coders51-a') => {
             returnTo: window.location.origin + logoutPath
         });
     }
+}
+
+const hasHomepage = (user) => {
+    return !!(user && user['app_metadata'] && user['app_metadata']['homepage'])
 }
 
 const populateAuth0Element = (data, key, domAttribute = 'innerText') => {
@@ -72,7 +82,7 @@ const updateUI = () => {
     const propertyMap = new Map([
         // ["members", isAuthenticated],
         ["loggedIn", isAuthenticated],
-        ["hasHomepage", !!(user && user['app_metadata'] && user['app_metadata']['homepage'])]
+        ["hasHomepage", hasHomepage(user)]
     ])
     handleElementsVisibility(propertyMap);
     handleElementsVisibility(propertyMap, 'data-auth0-content');
@@ -93,9 +103,6 @@ const getElementsByAttributeValue = (attribute, value) => {
     const nodes = document.body.querySelectorAll(`[${attribute}="${value}"]`);
     return Array.from(nodes);
 }
-
-
-
 
 const handleElementsVisibility = (propertyMap, visibilityAttribute = 'data-ms-content') => {
     const elements = getElementsByAttribute(visibilityAttribute)
@@ -118,7 +125,7 @@ const isElementVisible = (attributeVal, propertyMap) => {
         }
         if (propertyMap.has(attributeVal)) {
             const propValue = propertyMap.get(attributeVal)
-            return isNegation ? !propValue : propValue
+            return !isNegation != !propValue
         }
     }
     return true
@@ -132,6 +139,12 @@ let token = null;
 let user = null;
 let isAuthenticated = null;
 
+
+const navigateToDashboard = () => {
+    window.location.href = `homepage/${user.app_metadata.homepage}`
+}
+
+
 const configureClient = async () => {
     printTimeElapsed('configure client')
     auth0 = await createAuth0Client({
@@ -142,7 +155,6 @@ const configureClient = async () => {
 }
 
 triggerDOMManipulation = () => {
-    console.log(auth0Init, domInit, domManipulated)
     if (auth0Init && domInit && !domManipulated) {
         attachListeners()
         updateUI();
@@ -172,9 +184,20 @@ const handleAuth0 = async () => {
         logout();
     } else {
         user = await auth0.getUser();
+        if (isHomepage() && !isUserHomepage()) {
+            window.location.href = hasHomepage(user) ? `home-profile/${user.app_metadata.homepage}` : '/coders51-a' 
+        }
     }
     auth0Init = true;
     triggerDOMManipulation()
+}
+
+const isHomepage = () => {
+    return window.location.includes('/home-profile/')
+}
+
+const isUserHomepage = (user) => {
+    return window.location === `/home-profile/${user.app_metadata.homepage}`
 }
 
 const bootstrapIntegration = () => {
