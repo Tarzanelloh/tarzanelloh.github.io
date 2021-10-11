@@ -197,7 +197,7 @@ const isHomepage = () => {
 }
 
 const isUserHomepage = (user) => {
-    return window.location.href == `/home-profile/${getHomepage(user)}`
+    return window.location.href == `${window.location.host}/home-profile/${getHomepage(user)}`
 }
 
 const getHomepage = (user) => {
@@ -209,8 +209,13 @@ const getHomepage = (user) => {
 }
 
 const bootstrapIntegration = () => {
-    handleAuth0()
+    try {
+        handleAuth0()
+    } catch (e) {
+        console.error(e)
+    }
     window.onload = () => {
+        handleAuth0()
         domInit = true
         triggerDOMManipulation()
     }
