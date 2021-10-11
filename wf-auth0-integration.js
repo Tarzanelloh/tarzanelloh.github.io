@@ -197,7 +197,7 @@ const isHomepage = () => {
 }
 
 const isUserHomepage = (user) => {
-    return window.location.href == `${window.location.host}/home-profile/${getHomepage(user)}`
+    return window.location.href == `${window.location.protocol}//${window.location.host}/home-profile/${getHomepage(user)}`
 }
 
 const getHomepage = (user) => {
