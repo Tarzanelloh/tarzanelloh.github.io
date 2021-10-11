@@ -185,7 +185,7 @@ const handleAuth0 = async () => {
     } else {
         user = await auth0.getUser();
         if (isHomepage() && !isUserHomepage(user)) {
-            window.location.href = hasHomepage(user) ? `home-profile/${getHomepage(user)}` : '/coders51-a' 
+            window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
         }
     }
     auth0Init = true;
