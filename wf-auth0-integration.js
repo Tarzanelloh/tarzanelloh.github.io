@@ -54,7 +54,7 @@ const logout = (logoutPath = '/coders51-a') => {
 }
 
 const hasHomepage = (user) => {
-    return !!(user && user['app_metadata'] && user['app_metadata']['homepage'])
+    return !!getHomepage(user)
 }
 
 const populateAuth0Element = (data, key, domAttribute = 'innerText') => {
@@ -141,7 +141,7 @@ let isAuthenticated = null;
 
 
 const navigateToDashboard = () => {
-    window.location.href = `homepage/${user.app_metadata.homepage}`
+    window.location.href = `home-profile/${getHomepage(user)}`
 }
 
 
@@ -198,6 +198,14 @@ const isHomepage = () => {
 
 const isUserHomepage = (user) => {
     return window.location === `/home-profile/${user.app_metadata.homepage}`
+}
+
+const getHomepage = (user) => {
+    if (!user) {
+        return ""
+    }
+    const metadata = user && user['https://uhubs.co.uk/metadata']
+    return  metadata && metadata.app_metadata && metadata.app_metadata.homepage
 }
 
 const bootstrapIntegration = () => {
