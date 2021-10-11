@@ -185,7 +185,7 @@ const handleAuth0 = async () => {
     } else {
         user = await auth0.getUser();
         if (isHomepage() && !isUserHomepage()) {
-            window.location.href = hasHomepage(user) ? `home-profile/${user.app_metadata.homepage}` : '/coders51-a' 
+            window.location.href = hasHomepage(user) ? `home-profile/${getHomepage(user)}` : '/coders51-a' 
         }
     }
     auth0Init = true;
@@ -197,7 +197,7 @@ const isHomepage = () => {
 }
 
 const isUserHomepage = (user) => {
-    return window.location.href == `/home-profile/${user.app_metadata.homepage}`
+    return window.location.href == `/home-profile/${getHomepage(user)}`
 }
 
 const getHomepage = (user) => {
@@ -205,7 +205,7 @@ const getHomepage = (user) => {
         return ""
     }
     const metadata = user && user['https://uhubs.co.uk/metadata']
-    return  metadata && metadata.app_metadata && metadata.app_metadata.homepage
+    return  metadata && metadata.app && metadata.app.homepage
 }
 
 const bootstrapIntegration = () => {
