@@ -193,11 +193,11 @@ const handleAuth0 = async () => {
 }
 
 const isHomepage = () => {
-    return window.location.includes('/home-profile/')
+    return window.location.href.includes('/home-profile/')
 }
 
 const isUserHomepage = (user) => {
-    return window.location === `/home-profile/${user.app_metadata.homepage}`
+    return window.location.href == `/home-profile/${user.app_metadata.homepage}`
 }
 
 const getHomepage = (user) => {
