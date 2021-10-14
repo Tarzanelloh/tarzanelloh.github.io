@@ -225,11 +225,11 @@ const getHomepage = (user) => {
         return ""
     }
     const metadata = getMetadata(user)
-    return  metadata && metadata.app && metadata.app.homepage
+    return metadata && metadata.app && metadata.app.homepage
 }
 
 const getMetadata = (u) => {
-    u && u['https://uhubs.co.uk/metadata']
+    return u && u['https://uhubs.co.uk/metadata']
 }
 
 const bootstrapIntegration = () => {
@@ -254,7 +254,7 @@ let standardProperties
 function computeStandardProperties() {
     if (user) {
         standardProperties = {
-            'auth0_id': user.id,
+            'auth0_id': user.sub,
             'logged_in': true,
             'page': window.location.href
         }
