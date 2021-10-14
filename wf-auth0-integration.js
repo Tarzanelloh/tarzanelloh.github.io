@@ -12,6 +12,17 @@ const config = {
     clientId: "kAadazt98UyBLW8NrYtvxUIBoIhAKiOG"
 }
 
+const toggleAuth0DependantElements = (show) => {
+    const elements = getElementsByAttribute('show-auth0')
+    elements.forEach(el => {
+        if (show) {
+            el.classList.remove("d-none")
+        } else {
+            el.classList.add("d-none")
+        }
+    })
+}
+
 const attachListeners = () => {
     const loginButton = document.querySelector('[auth0-login]')
     if (loginButton) {
@@ -215,7 +226,9 @@ const bootstrapIntegration = () => {
     //     console.error(e)
     // }
     window.onload = () => {
+        toggleAuth0DependantElements(false)
         handleAuth0()
+        toggleAuth0DependantElements(true)
         domInit = true
         triggerDOMManipulation()
     }
@@ -226,6 +239,7 @@ bootstrapIntegration()
 // Amplitude Event properties code
 let standardProperties
 function computeStandardProperties() {
+    console.log("HERE!!!")
     if (user) {
         standardProperties = {
             'auth0_id': user_id,
