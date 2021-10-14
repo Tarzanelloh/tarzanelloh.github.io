@@ -250,7 +250,7 @@ const bootstrapIntegration = () => {
 bootstrapIntegration()
 
 // Amplitude Event properties code
-let standardProperties
+var standardProperties
 function computeStandardProperties() {
     if (user) {
         standardProperties = {
@@ -268,6 +268,7 @@ function computeStandardProperties() {
             'page': window.location.href
         }
     }
+    return standardProperties
 }
 
 window.getEventProperties = (properties) => {
