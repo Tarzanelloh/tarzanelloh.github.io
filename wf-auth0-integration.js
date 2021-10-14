@@ -222,3 +222,32 @@ const bootstrapIntegration = () => {
 }
 
 bootstrapIntegration()
+
+// Amplitude Event properties code
+let standardProperties
+function computeStandardProperties() {
+    if (user) {
+        standardProperties = {
+            'auth0_id': user_id,
+            'logged_in': true,
+            'page': window.location.href
+        }
+        const msUuid = getMetadata(user)['app']['ms-uuid']
+        if (msUuid) {
+            standardProperties = Object.assign(standardProperties, { 'memberstack_id': msUuid})
+        }
+    } else {
+        standardProperties = {
+            'logged_in': false,
+            'page': window.location.href
+        }
+    }
+}
+
+window.getEventProperties = (properties) => {
+    return new Promise((res, rej) => {
+        auth0EventEmitter.addEventListener("ready", () => {
+            res(computeStandardProperties())
+        })
+    })
+}
