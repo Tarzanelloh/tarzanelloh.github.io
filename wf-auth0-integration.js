@@ -206,6 +206,7 @@ const handleAuth0 = async () => {
             window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
         }
     }
+    console.log(isAuthenticated, user)
     auth0EventEmitter.emit("ready")
     auth0Init = true;
     triggerDOMManipulation()
@@ -251,10 +252,9 @@ bootstrapIntegration()
 // Amplitude Event properties code
 let standardProperties
 function computeStandardProperties() {
-    console.log("HERE!!!", user)
     if (user) {
         standardProperties = {
-            'auth0_id': user_id,
+            'auth0_id': user.id,
             'logged_in': true,
             'page': window.location.href
         }
