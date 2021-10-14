@@ -1,5 +1,12 @@
 let time = Date.now();
 
+class Auth0EventEmitter extends EventTarget {
+    emit(event) {
+        this.dispatchEvent(new Event(event))
+    }
+}
+const auth0EventEmitter = new Auth0EventEmitter()
+
 const printTimeElapsed = (message = '') => {
     const timeElapsed = "" + (Date.now() - time)
     console.log(`Time elapsed since page load: ${timeElapsed}ms ${message ? `(${message})` : ''}`)
@@ -199,6 +206,7 @@ const handleAuth0 = async () => {
             window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
         }
     }
+    auth0EventEmitter.emit("ready")
     auth0Init = true;
     triggerDOMManipulation()
 }
@@ -215,8 +223,12 @@ const getHomepage = (user) => {
     if (!user) {
         return ""
     }
-    const metadata = user && user['https://uhubs.co.uk/metadata']
+    const metadata = getMetadata(user)
     return  metadata && metadata.app && metadata.app.homepage
+}
+
+const getMetadata = (u) => {
+    u && u['https://uhubs.co.uk/metadata']
 }
 
 const bootstrapIntegration = () => {
@@ -239,7 +251,7 @@ bootstrapIntegration()
 // Amplitude Event properties code
 let standardProperties
 function computeStandardProperties() {
-    console.log("HERE!!!")
+    console.log("HERE!!!", user)
     if (user) {
         standardProperties = {
             'auth0_id': user_id,
