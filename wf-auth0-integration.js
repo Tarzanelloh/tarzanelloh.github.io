@@ -209,11 +209,11 @@ const getHomepage = (user) => {
 }
 
 const bootstrapIntegration = () => {
-    try {
-        handleAuth0()
-    } catch (e) {
-        console.error(e)
-    }
+    // try {
+    //     handleAuth0()
+    // } catch (e) {
+    //     console.error(e)
+    // }
     window.onload = () => {
         handleAuth0()
         domInit = true
