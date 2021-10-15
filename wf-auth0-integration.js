@@ -16,6 +16,7 @@ const printTimeElapsed = (message = '') => {
 
 const config = {
     domain: "uhubs.eu.auth0.com",
+    // domain: "login.uhubs.co.uk",
     clientId: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S"
 }
 
@@ -43,7 +44,7 @@ const attachListeners = () => {
 
     const navigateToDashboardButtons = document.querySelectorAll('[auth0-dashboard]')
     navigateToDashboardButtons.forEach(nb=> {
-        navigateToDashboardButton.addEventListener('click', () => navigateToDashboard())
+        nb.addEventListener('click', () => navigateToDashboard())
     })
 }
 
@@ -98,7 +99,7 @@ const injectAuth0Metadata = (user, domain) => {
 
 const updateUI = () => {
     const propertyMap = new Map([
-        // ["members", isAuthenticated],
+        ["members", isAuthenticated],
         ["loggedIn", isAuthenticated],
         ["hasHomepage", hasHomepage(user)]
     ])
