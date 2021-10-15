@@ -15,8 +15,8 @@ const printTimeElapsed = (message = '') => {
 // printTimeElapsed()
 
 const config = {
-    domain: "coders51.eu.auth0.com",
-    clientId: "kAadazt98UyBLW8NrYtvxUIBoIhAKiOG"
+    domain: "uhubs.eu.auth0.com",
+    clientId: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S"
 }
 
 const toggleAuth0DependantElements = (show) => {
