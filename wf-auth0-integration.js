@@ -39,7 +39,11 @@ const attachListeners = () => {
 
     const logoutButtons = document.querySelectorAll('[auth0-logout]')
     logoutButtons.forEach(lb => {
-        lb.addEventListener('click', () => logout())
+        lb.addEventListener('click', () => {
+            auth0.logout({
+                returnTo: window.location.origin + logoutPath
+            });
+        })
     })
 
     const navigateToDashboardButtons = document.querySelectorAll('[auth0-dashboard]')
