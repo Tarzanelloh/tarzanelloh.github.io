@@ -202,9 +202,9 @@ const handleAuth0 = async () => {
         logout();
     } else {
         user = await auth0.getUser();
-        if (isHomepage() && !isUserHomepage(user)) {
-            window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
-        }
+    }
+    if (isHomepage() && !isUserHomepage(user)) {
+        window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
     }
     console.log(isAuthenticated, user)
     auth0EventEmitter.emit("ready")
