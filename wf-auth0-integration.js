@@ -31,20 +31,20 @@ const toggleAuth0DependantElements = (show) => {
 }
 
 const attachListeners = () => {
-    const loginButton = document.querySelector('[auth0-login]')
-    if (loginButton) {
-        loginButton.addEventListener('click', () => login())
-    }
+    const loginButtons = document.querySelectorAll('[auth0-login]')
+    loginButtons.forEach(lb => {
+        lb.addEventListener('click', () => login())
+    })
 
-    const logoutButton = document.querySelector('[auth0-logout]')
-    if (logoutButton) {
-        logoutButton.addEventListener('click', () => logout())
-    }
+    const logoutButtons = document.querySelectorAll('[auth0-logout]')
+    logoutButtons.forEach(lb => {
+        lb.addEventListener('click', () => logout())
+    })
 
-    const navigateToDashboardButton = document.querySelector('[auth0-dashboard]')
-    if (navigateToDashboardButton) {
+    const navigateToDashboardButtons = document.querySelectorAll('[auth0-dashboard]')
+    navigateToDashboardButtons.forEach(nb=> {
         navigateToDashboardButton.addEventListener('click', () => navigateToDashboard())
-    }
+    })
 }
 
 const login = async () => {
