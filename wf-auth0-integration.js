@@ -41,7 +41,7 @@ const attachListeners = () => {
     logoutButtons.forEach(lb => {
         lb.addEventListener('click', () => {
             auth0.logout({
-                returnTo: window.location.origin
+                returnTo: window.location.href
             });
         })
     })
