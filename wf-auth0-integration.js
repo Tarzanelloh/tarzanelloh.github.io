@@ -106,7 +106,9 @@ const updateUI = () => {
     handleElementsVisibility(propertyMap);
     handleElementsVisibility(propertyMap, 'data-auth0-content');
     if (user) {
-        populateAuth0Element(user, 'picture', 'srcset');
+        if (user['picture']) {
+            populateAuth0Element(user, 'picture', 'srcset');
+        }
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
         populateAuth0Element(user, 'name');
     }
