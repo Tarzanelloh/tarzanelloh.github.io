@@ -55,7 +55,7 @@ const attachListeners = () => {
 const login = async () => {
     await auth0.loginWithRedirect({
         appState: { target: window.location.origin + '/coders51-b'},
-        redirect_uri: window.location.origin
+        redirect_uri: window.location.href
     })
 }
 
