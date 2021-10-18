@@ -15,8 +15,8 @@ const printTimeElapsed = (message = '') => {
 // printTimeElapsed()
 
 const config = {
-    domain: "uhubs.eu.auth0.com",
-    // domain: "login.uhubs.co.uk",
+    // domain: "uhubs.eu.auth0.com",
+    domain: "login.uhubs.co.uk",
     clientId: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S"
 }
 
@@ -41,7 +41,8 @@ const attachListeners = () => {
     logoutButtons.forEach(lb => {
         lb.addEventListener('click', () => {
             auth0.logout({
-                returnTo: isLoggedOut() ? window.location.href : window.location.origin
+                // returnTo: isLoggedOut() ? window.location.href : window.location.origin
+                returnTo: window.location.origin
             });
         })
     })
@@ -54,8 +55,8 @@ const attachListeners = () => {
 
 const login = async () => {
     await auth0.loginWithRedirect({
-        appState: { target: window.location.origin + '/coders51-b'},
-        redirect_uri: window.location.href
+        appState: { target: window.location.href},
+        redirect_uri: window.location.origin
     })
 }
 
@@ -69,7 +70,7 @@ const isLoggedOut = () => {
     return invalidLogoutPaths.indexOf(currentLocation) == -1
 }
 
-const logout = (logoutPath = '/coders51-a') => {
+const logout = (logoutPath = '/') => {
     if (!isLoggedOut()) {
         auth0.logout({
             returnTo: window.location.origin + logoutPath
@@ -204,7 +205,7 @@ const handleAuth0 = async () => {
 
         // Process the login state
         const { appState } = await auth0.handleRedirectCallback();
-        if (appState.target) {
+        if (appState.target && appState.target != window.location.href) {
             window.location.href = appState.target
         }
 
