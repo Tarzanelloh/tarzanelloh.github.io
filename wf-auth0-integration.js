@@ -203,7 +203,7 @@ const handleAuth0 = async () => {
     if (query.includes('code=') && query.includes('state=')) {
 
         // Process the login state
-        const appState = await auth0.handleRedirectCallback();
+        const { appState } = await auth0.handleRedirectCallback();
         window.location.href = appState.target
 
         // Use replaceState to redirect the user away and remove the querystring parameters
