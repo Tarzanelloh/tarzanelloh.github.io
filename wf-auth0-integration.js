@@ -56,7 +56,7 @@ const attachListeners = () => {
 const login = async () => {
     await auth0.loginWithRedirect({
         appState: { target: window.location.href},
-        redirect_uri: window.location.origin
+        redirect_uri: window.location.origin + '/redirecting'
     })
 }
 
@@ -121,6 +121,8 @@ const updateUI = () => {
         }
         injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
         populateAuth0Element(user, 'name');
+        populateAuth0Element(user, 'sub');
+        populateAuth0Element(user, 'email');
     }
     return;
 }
@@ -249,11 +251,6 @@ const getMetadata = (u) => {
 }
 
 const bootstrapIntegration = () => {
-    // try {
-    //     handleAuth0()
-    // } catch (e) {
-    //     console.error(e)
-    // }
     window.onload = () => {
         toggleAuth0DependantElements(false)
         handleAuth0()
@@ -274,7 +271,7 @@ function computeStandardProperties() {
             'logged_in': true,
             'page': window.location.href
         }
-        const msUuid = getMetadata(user)['app']['ms-uuid']
+        const msUuid = getMetadata(user)['app']['memberstack_id']
         if (msUuid) {
             standardProperties = Object.assign(standardProperties, { 'memberstack_id': msUuid})
         }
