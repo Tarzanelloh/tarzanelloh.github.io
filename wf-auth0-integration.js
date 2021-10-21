@@ -14,7 +14,7 @@ const printTimeElapsed = (message = '') => {
 
 const config = {
     domain: "login.uhubs.co.uk",
-    clientId: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S",
+    client_id: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S",
     useRefreshTokens: true
 }
 
@@ -178,10 +178,7 @@ const navigateToDashboard = () => {
 
 const configureClient = async () => {
     printTimeElapsed('configure client')
-    auth0 = await createAuth0Client({
-        domain: config.domain,
-        client_id: config.clientId
-    });
+    auth0 = await createAuth0Client(config);
     printTimeElapsed('configure client end')
 }
 
