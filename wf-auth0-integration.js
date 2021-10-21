@@ -12,12 +12,10 @@ const printTimeElapsed = (message = '') => {
     console.log(`Time elapsed since page load: ${timeElapsed}ms ${message ? `(${message})` : ''}`)
 }
 
-// printTimeElapsed()
-
 const config = {
-    // domain: "uhubs.eu.auth0.com",
     domain: "login.uhubs.co.uk",
-    clientId: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S"
+    clientId: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S",
+    useRefreshTokens: true
 }
 
 const toggleAuth0DependantElements = (show) => {
