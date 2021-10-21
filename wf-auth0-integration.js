@@ -15,7 +15,9 @@ const printTimeElapsed = (message = '') => {
 const config = {
     domain: "login.uhubs.co.uk",
     client_id: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S",
-    useRefreshTokens: true
+    useRefreshTokens: true,
+    cacheLocation: "localstorage",
+    
 }
 
 const toggleAuth0DependantElements = (show) => {
