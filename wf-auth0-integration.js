@@ -108,7 +108,8 @@ const submitUserMetadata = () => {
     // look up docs for auth0-spa-sdk.js in order to get the syntax right, this is a stub at best, I can't remember the actual syntax
     // auth0 is a global variable which holds the auth0 client which has already been initialized
     // the update should be done by PATCH I believe, so maybe we would not even need to merge with the old metadata
-    auth0Manage.patchUserMetadata(userId["user_id"], finalUserMetadata);
+    console.log(finalUserMetadata)
+    auth0Manage.patchUserMetadata(user["user_id"], finalUserMetadata);
     //auth0.users.update_user_metadata(user["user_id"], finalUserMetadata)
 }
 // END STUB
