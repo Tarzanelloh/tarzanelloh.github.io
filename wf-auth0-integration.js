@@ -98,6 +98,7 @@ const injectAuth0Metadata = (user, domain) => {
     if (user_metadata) {
         Object.keys(user_metadata).forEach(k => {
             populateAuth0Element(user_metadata, k);
+            populateAuth0Element(user_metadata, k, 'value');
         }); 
     }
     if (app_metadata) {
