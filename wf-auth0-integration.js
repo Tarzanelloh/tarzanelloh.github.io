@@ -53,11 +53,12 @@ const attachListeners = () => {
 
     // START STUB
     // this should work as is with the custom attribute "auth0-submit-user-metadata"
-    const submitUserMetadataButtons = document.querySelectorAll('[auth0-submit-user-metadata]')
-    //submitUserMetadataButtons.forEach(sb => submitUserMetadata())
+   const submitUserMetadataButtons = document.querySelectorAll('[auth0-submit-user-metadata]')
+   // submitUserMetadataButtons.forEach(sb => submitUserMetadata())
     submitUserMetadataButtons.forEach(sb => {
         sb.addEventListener('click', () => submitUserMetadata())
     })
+    //document.getElementById('auth0-submit-user-metadata').addEventListener('click', () => submitUserMetadata())
     // END STUB
 }
 
@@ -89,10 +90,10 @@ const logout = (logoutPath = '/') => {
 // START STUB
 // this is all semi pseudo code, you'll have to look the actual syntax up at MDN/w3schools/whatever works for you
 const submitUserMetadata = () => {
-    const firstNameFormValue = document.getElementById("auth0-first-name-form").getAttribute("value")
-    const lastNameFormValue = document.getElementById("auth0-last-name-form").getAttribute("value")
-    const jobTitleFormValue = document.getElementById("auth0-job-title-form").getAttribute("value")
-    const companyValue = document.getElementById("auth0-company-form").getAttribute("value")
+    const firstNameFormValue = document.getElementById("auth0-first-name-form").value
+    const lastNameFormValue = document.getElementById("auth0-last-name-form").value
+    const jobTitleFormValue = document.getElementById("auth0-job-title-form").value
+    const companyValue = document.getElementById("auth0-company-form").value
     // do the same for all forms: lastName, jobTitle, companyName etc.
     // when you have all your data in order, construct a new user metadata object made up of the new values and then merge it with the old metadata
     const newUserMetadata = { 
@@ -109,7 +110,7 @@ const submitUserMetadata = () => {
     // auth0 is a global variable which holds the auth0 client which has already been initialized
     // the update should be done by PATCH I believe, so maybe we would not even need to merge with the old metadata
     console.log(finalUserMetadata)
-    auth0Manage.patchUserMetadata(user["user_id"], finalUserMetadata);
+    auth0.patchUserMetadata(user["user_id"], finalUserMetadata);
     //auth0.users.update_user_metadata(user["user_id"], finalUserMetadata)
 }
 // END STUB
