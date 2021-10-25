@@ -115,6 +115,8 @@ const submitUserMetadata = () => {
 }
 // END STUB
 
+// Update user metadata
+
 const hasHomepage = (user) => {
     return !!getHomepage(user)
 }
@@ -260,6 +262,7 @@ const handleAuth0 = async () => {
         window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
     }
     console.log(isAuthenticated, user)
+    console.log(auth0.checkSession())
     auth0EventEmitter.emit("ready")
     auth0Init = true;
     triggerDOMManipulation()
