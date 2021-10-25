@@ -16,7 +16,7 @@ const config = {
     domain: "login.uhubs.co.uk",
     client_id: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S",
     cacheLocation: "localstorage",
-
+    scope: "create:current_user_metadata"
 }
 
 const toggleAuth0DependantElements = (show) => {
@@ -260,9 +260,9 @@ const handleAuth0 = async () => {
     }
     if (isHomepage() && !isUserHomepage(user)) {
         window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
+        const newToken = await auth0.getTokenSilenty()
     }
     console.log(isAuthenticated, user)
-    console.log(auth0.checkSession())
     auth0EventEmitter.emit("ready")
     auth0Init = true;
     triggerDOMManipulation()
