@@ -257,7 +257,7 @@ const handleAuth0 = async () => {
         logout();
     } else {
         user = await auth0.getUser();
-        const newToken = await auth0.getTokenSilenty()
+        // const newToken = await auth0.getTokenSilenty()
     }
     if (isHomepage() && !isUserHomepage(user)) {
         window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
