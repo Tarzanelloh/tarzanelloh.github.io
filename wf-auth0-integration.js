@@ -16,7 +16,8 @@ const config = {
     domain: "login.uhubs.co.uk",
     client_id: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S",
     cacheLocation: "localstorage",
-    scope: "create:current_user_metadata"
+    scope: "create:current_user_metadata",
+    audience: "https://api.uhubs.co.uk"
 }
 
 const toggleAuth0DependantElements = (show) => {
