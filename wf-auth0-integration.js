@@ -13,10 +13,9 @@ const printTimeElapsed = (message = '') => {
 }
 
 const config = {
-    domain: "login.uhubs.co.uk",
-    client_id: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S",
+    domain: "uhubs-staging.eu.auth0.com/",
+    client_id: "RLaFcdBuvgXPws43E3iQkjYPCqMeR4Tq",
     cacheLocation: "localstorage",
-    scope: "create:current_user_metadata",
     audience: "https://api.uhubs.co.uk"
 }
 
