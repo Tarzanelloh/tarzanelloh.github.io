@@ -332,7 +332,7 @@ window.getEventProperties = (properties) => {
         const interval = setInterval(() => {
             if (auth0Ready) {
                 window.clearInterval(interval)
-                res(computeStandardProperties())
+                res({...properties, ...computeStandardProperties()})
             }
         }, 200)
     })
