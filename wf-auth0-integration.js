@@ -322,7 +322,7 @@ function computeStandardProperties() {
     return standardProperties
 }
 
-const auth0Ready = false
+let auth0Ready = false
 auth0EventEmitter.addEventListener("ready", () => {
     auth0Ready = true
 })
