@@ -322,10 +322,18 @@ function computeStandardProperties() {
     return standardProperties
 }
 
+const auth0Ready = false
+auth0EventEmitter.addEventListener("ready", () => {
+    auth0Ready = true
+})
+
 window.getEventProperties = (properties) => {
     return new Promise((res, rej) => {
-        auth0EventEmitter.addEventListener("ready", () => {
-            res(computeStandardProperties())
-        })
+        const interval = setInterval(() => {
+            if (auth0Ready) {
+                window.clearInterval(interval)
+                res(computeStandardProperties())
+            }
+        }, 200)
     })
 }
