@@ -1,5 +1,4 @@
 let time = Date.now();
-// Hi this i fabio
 class Auth0EventEmitter extends EventTarget {
     emit(event) {
         this.dispatchEvent(new Event(event))
@@ -337,3 +336,9 @@ window.getEventProperties = (properties) => {
         }, 200)
     })
 }
+
+auth0.getIdTokenClaims().then((claims) => {
+    await paragon.authenticate("bf511600-aa1b-40c5-b051-d5cd917defa1", claims.__raw)
+})
+
+
