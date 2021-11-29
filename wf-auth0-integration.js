@@ -1,3 +1,7 @@
+auth0.getIdTokenClaims().then((claims) => {
+    await paragon.authenticate("bf511600-aa1b-40c5-b051-d5cd917defa1", claims.__raw)
+})
+
 let time = Date.now();
 class Auth0EventEmitter extends EventTarget {
     emit(event) {
@@ -39,7 +43,6 @@ const attachListeners = () => {
     logoutButtons.forEach(lb => {
         lb.addEventListener('click', () => {
             auth0.logout({
-                // returnTo: isLoggedOut() ? window.location.href : window.location.origin
                 returnTo: window.location.origin
             });
         })
@@ -49,16 +52,6 @@ const attachListeners = () => {
     navigateToDashboardButtons.forEach(nb=> {
         nb.addEventListener('click', () => navigateToDashboard())
     })
-
-    // START STUB
-    // this should work as is with the custom attribute "auth0-submit-user-metadata"
-   const submitUserMetadataButtons = document.querySelectorAll('[auth0-submit-user-metadata]')
-   // submitUserMetadataButtons.forEach(sb => submitUserMetadata())
-    submitUserMetadataButtons.forEach(sb => {
-        sb.addEventListener('click', () => submitUserMetadata())
-    })
-    //document.getElementById('auth0-submit-user-metadata').addEventListener('click', () => submitUserMetadata())
-    // END STUB
 }
 
 const login = async () => {
@@ -85,36 +78,6 @@ const logout = (logoutPath = '/') => {
         });
     }
 }
-
-// START STUB
-// this is all semi pseudo code, you'll have to look the actual syntax up at MDN/w3schools/whatever works for you
-const submitUserMetadata = () => {
-    const firstNameFormValue = document.getElementById("auth0-first-name-form").value
-    const lastNameFormValue = document.getElementById("auth0-last-name-form").value
-    const jobTitleFormValue = document.getElementById("auth0-job-title-form").value
-    const companyValue = document.getElementById("auth0-company-form").value
-    // do the same for all forms: lastName, jobTitle, companyName etc.
-    // when you have all your data in order, construct a new user metadata object made up of the new values and then merge it with the old metadata
-    const newUserMetadata = { 
-        first_name: firstNameFormValue, 
-        last_name: lastNameFormValue,
-        job_title: jobTitleFormValue,
-        company: companyValue    
-    } // etc. etc.
-    // user is a global variable
-    const oldUserMetadata = getMetadata(user)["user"]
-    // actual syntax for object merge
-    const finalUserMetadata = {...oldUserMetadata, ...newUserMetadata }
-    // look up docs for auth0-spa-sdk.js in order to get the syntax right, this is a stub at best, I can't remember the actual syntax
-    // auth0 is a global variable which holds the auth0 client which has already been initialized
-    // the update should be done by PATCH I believe, so maybe we would not even need to merge with the old metadata
-    console.log(finalUserMetadata)
-    auth0.patchUserMetadata(user["user_id"], finalUserMetadata);
-    //auth0.users.update_user_metadata(user["user_id"], finalUserMetadata)
-}
-// END STUB
-
-// Update user metadata
 
 const hasHomepage = (user) => {
     return !!getHomepage(user)
@@ -162,6 +125,8 @@ const updateUI = () => {
         populateAuth0Element(user, 'name');
         populateAuth0Element(user, 'sub');
         populateAuth0Element(user, 'email');
+        populateAuth0Element(user, 'sub', 'value');
+        populateAuth0Element(user, 'email', 'value');
     }
     return;
 }
@@ -256,7 +221,6 @@ const handleAuth0 = async () => {
         logout();
     } else {
         user = await auth0.getUser();
-        // const newToken = await auth0.getTokenSilenty()
     }
     if (isHomepage() && !isUserHomepage(user)) {
         window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
@@ -336,9 +300,5 @@ window.getEventProperties = (properties) => {
         }, 200)
     })
 }
-
-auth0.getIdTokenClaims().then((claims) => {
-    await paragon.authenticate("bf511600-aa1b-40c5-b051-d5cd917defa1", claims.__raw)
-})
 
 
