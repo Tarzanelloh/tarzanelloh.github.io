@@ -264,14 +264,14 @@ const getMetadata = async (u) => {
         }).then(res => res.json()).then(payload => {
             return {...{ app_metadata: {}, user_metadata: {} }, ...payload.user }
         })   
-    user_metadata.first_name = user_metadata.first_name || user.given_name;
-    user_metadata.last_name = user_metadata.last_name || user.family_name;
-    const rawId = user.user_id.includes("|") ? user.user_id.split("|")[1] : user.user_id;
-    const homepage = app_metadata.homepage || rawId;
-    app_metadata.homepage = app_metadata.product_dashboard_access ? homepage : "";
-    metadata = { app: app_metadata, user: user_metadata }
-}
-return metadata
+        user_metadata.first_name = user_metadata.first_name || user.given_name;
+        user_metadata.last_name = user_metadata.last_name || user.family_name;
+        const rawId = user.sub.includes("|") ? user.sub.split("|")[1] : user.sub;
+        const homepage = app_metadata.homepage || rawId;
+        app_metadata.homepage = app_metadata.product_dashboard_access ? homepage : "";
+        metadata = { app: app_metadata, user: user_metadata }
+    }
+    return metadata
 }
 
 const bootstrapIntegration = () => {
