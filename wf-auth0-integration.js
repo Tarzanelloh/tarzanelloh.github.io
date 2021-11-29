@@ -261,7 +261,7 @@ const getMetadata = async (u) => {
             headers: {
                 'Authorization': `Bearer ${token}`,
             }
-        }).then(res => res.json())
+        }).then(res => res.json()).then(payload => JSON.parse(payload.user))
         user_metadata.first_name = user_metadata.first_name || user.given_name;
         user_metadata.last_name = user_metadata.last_name || user.family_name;
         const rawId = user.user_id.includes("|") ? user.user_id.split("|")[1] : user.user_id;
