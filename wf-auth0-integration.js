@@ -180,6 +180,7 @@ let auth0 = null;
 let token = null;
 let user = null;
 let isAuthenticated = null;
+let metadata = null;
 
 
 const navigateToDashboard = () => {
@@ -254,18 +255,21 @@ const getHomepage = (user) => {
 }
 
 const getMetadata = async (u) => {
-    // return u && u['https://uhubs.co.uk/metadata']
-    const { user_metadata, app_metadata } = await fetch(`${config.backend}/user`, {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-        }
-    })
-    user_metadata.first_name = user_metadata.first_name || user.given_name;
-    user_metadata.last_name = user_metadata.last_name || user.family_name;
-    const rawId = user.user_id.includes("|") ? user.user_id.split("|")[1] : user.user_id;
-    const homepage = app_metadata.homepage || rawId;
-    app_metadata.homepage = app_metadata.product_dashboard_access ? homepage : "";
-    return { app: app_metadata, user: user_metadata}
+    if (!metadata) {
+        // return u && u['https://uhubs.co.uk/metadata']
+        const { user_metadata, app_metadata } = await fetch(`${config.backend}/user`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        })
+        user_metadata.first_name = user_metadata.first_name || user.given_name;
+        user_metadata.last_name = user_metadata.last_name || user.family_name;
+        const rawId = user.user_id.includes("|") ? user.user_id.split("|")[1] : user.user_id;
+        const homepage = app_metadata.homepage || rawId;
+        app_metadata.homepage = app_metadata.product_dashboard_access ? homepage : "";
+        metadata = { app: app_metadata, user: user_metadata}
+    }
+    return metadata
 }
 
 const bootstrapIntegration = () => {
