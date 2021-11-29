@@ -18,10 +18,13 @@ const printTimeElapsed = (message = '') => {
 }
 
 const config = {
-    domain: "uhubs-staging.eu.auth0.com",
-    client_id: "RLaFcdBuvgXPws43E3iQkjYPCqMeR4Tq",
-    cacheLocation: "localstorage",
-    audience: "https://api.uhubs.co.uk"
+    auth0: { 
+        domain: "uhubs-staging.eu.auth0.com",
+        client_id: "RLaFcdBuvgXPws43E3iQkjYPCqMeR4Tq",
+        cacheLocation: "localstorage",
+        audience: "https://api.uhubs.co.uk"
+    },
+    backend: "https://api-staging.uhubs.co.uk"
 }
 
 const toggleAuth0DependantElements = (show) => {
@@ -94,8 +97,8 @@ const populateAuth0Element = (data, key, domAttribute = 'innerText') => {
     })
 }
 
-const injectAuth0Metadata = (user, domain) => {
-    const metadata = user[domain];
+const injectAuth0Metadata = (user) => {
+    const metadata = getMetadata(user);
     const user_metadata = metadata.user;
     const app_metadata = metadata.app;
     if (user_metadata) {
@@ -123,7 +126,7 @@ const updateUI = () => {
         if (user['picture']) {
             populateAuth0Element(user, 'picture', 'srcset');
         }
-        injectAuth0Metadata(user, 'https://uhubs.co.uk/metadata');
+        injectAuth0Metadata(user);
         populateAuth0Element(user, 'name');
         populateAuth0Element(user, 'sub');
         populateAuth0Element(user, 'email');
@@ -186,7 +189,7 @@ const navigateToDashboard = () => {
 
 const configureClient = async () => {
     printTimeElapsed('configure client')
-    auth0 = await createAuth0Client(config);
+    auth0 = await createAuth0Client(config.auth0);
     printTimeElapsed('configure client end')
 }
 
@@ -223,10 +226,7 @@ const handleAuth0 = async () => {
         logout();
     } else {
         user = await auth0.getUser();
-        if (isMetadataStale(user)) {
-            auth0.loginWithPopup();
-            user = await auth0.getUser();
-        }
+        token = await auth0.getTokenSilently();
     }
     if (isHomepage() && !isUserHomepage(user)) {
         window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
@@ -254,19 +254,18 @@ const getHomepage = (user) => {
 }
 
 const getMetadata = (u) => {
-    return u && u['https://uhubs.co.uk/metadata']
-}
-
-const getMetadataUpdatedAt = (u) => {
-    const metadata = getMetadata(u)
-    return new Date(metadata.app.updated_at || 0)
-
-}
-
-const isMetadataStale = (u) => {
-    const userUpdatedAt = new Date(u.updated_at)
-    const metadataUpdatedAt = getMetadataUpdatedAt(u)
-    return userUpdatedAt.getTime() > metadataUpdatedAt.getTime()
+    // return u && u['https://uhubs.co.uk/metadata']
+    const { user_metadata, app_metadata } = fetch(`${config.backend}/user`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    })
+    user_metadata.first_name = user_metadata.first_name || user.given_name;
+    user_metadata.last_name = user_metadata.last_name || user.family_name;
+    const rawId = user.user_id.includes("|") ? user.user_id.split("|")[1] : user.user_id;
+    const homepage = app_metadata.homepage || rawId;
+    app_metadata.homepage = app_metadata.product_dashboard_access ? homepage : "";
+    return { app: app_metadata, user: user_metadata}
 }
 
 const bootstrapIntegration = () => {
