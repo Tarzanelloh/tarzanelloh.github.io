@@ -221,6 +221,10 @@ const handleAuth0 = async () => {
         logout();
     } else {
         user = await auth0.getUser();
+        if (isMetadataStale(user)) {
+            auth0.loginWithPopup();
+            user = await auth0.getUser();
+        }
     }
     if (isHomepage() && !isUserHomepage(user)) {
         window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
@@ -249,6 +253,18 @@ const getHomepage = (user) => {
 
 const getMetadata = (u) => {
     return u && u['https://uhubs.co.uk/metadata']
+}
+
+const getMetadataUpdatedAt = (u) => {
+    const metadata = getMetadata(u)
+    return new Date(metadata.app.updated_at || 0)
+
+}
+
+const isMetadataStale = (u) => {
+    const userUpdatedAt = new Date(u.updated_at)
+    const metadataUpdatedAt = getMetadataUpdatedAt(u)
+    return userUpdatedAt.getTime() > metadataUpdatedAt.getTime()
 }
 
 const bootstrapIntegration = () => {
