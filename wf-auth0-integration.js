@@ -1,4 +1,5 @@
-auth0.getIdTokenClaims().then((claims) => {
+async function authenticateParagon() {
+    auth0.getIdTokenClaims().then((claims) => {
     await paragon.authenticate("bf511600-aa1b-40c5-b051-d5cd917defa1", claims.__raw)
 })
 
