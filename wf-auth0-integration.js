@@ -1,7 +1,8 @@
-const authenticateParagon = async () => {
-    auth0.getIdTokenClaims().then((claims) => {
-    await paragon.authenticate("bf511600-aa1b-40c5-b051-d5cd917defa1", claims.__raw)
-})
+const authenticateParagon = () => {
+    auth0.getIdTokenClaims().then(async (claims) => {
+        paragon.authenticate("bf511600-aa1b-40c5-b051-d5cd917defa1", claims.__raw)
+    })
+}
 
 let time = Date.now();
 class Auth0EventEmitter extends EventTarget {
