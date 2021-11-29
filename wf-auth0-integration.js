@@ -18,7 +18,7 @@ const printTimeElapsed = (message = '') => {
 }
 
 const config = {
-    auth0: { 
+    auth0: {
         domain: "uhubs-staging.eu.auth0.com",
         client_id: "RLaFcdBuvgXPws43E3iQkjYPCqMeR4Tq",
         cacheLocation: "localstorage",
@@ -54,14 +54,14 @@ const attachListeners = () => {
     })
 
     const navigateToDashboardButtons = document.querySelectorAll('[auth0-dashboard]')
-    navigateToDashboardButtons.forEach(nb=> {
+    navigateToDashboardButtons.forEach(nb => {
         nb.addEventListener('click', () => navigateToDashboard())
     })
 }
 
 const login = async () => {
     await auth0.loginWithRedirect({
-        appState: { target: window.location.href},
+        appState: { target: window.location.href },
         redirect_uri: window.location.origin + '/redirecting'
     })
 }
@@ -105,7 +105,7 @@ const injectAuth0Metadata = (user) => {
         Object.keys(user_metadata).forEach(k => {
             populateAuth0Element(user_metadata, k);
             populateAuth0Element(user_metadata, k, 'value');
-        }); 
+        });
     }
     if (app_metadata) {
         Object.keys(app_metadata).forEach(k => {
@@ -230,7 +230,7 @@ const handleAuth0 = async () => {
         token = await auth0.getTokenSilently();
     }
     if (isHomepage() && !isUserHomepage(user)) {
-        window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a' 
+        window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a'
     }
     console.log(isAuthenticated, user)
     auth0EventEmitter.emit("ready")
@@ -261,15 +261,17 @@ const getMetadata = async (u) => {
             headers: {
                 'Authorization': `Bearer ${token}`,
             }
-        }).then(res => res.json()).then(payload => JSON.parse(payload.user))
-        user_metadata.first_name = user_metadata.first_name || user.given_name;
-        user_metadata.last_name = user_metadata.last_name || user.family_name;
-        const rawId = user.user_id.includes("|") ? user.user_id.split("|")[1] : user.user_id;
-        const homepage = app_metadata.homepage || rawId;
-        app_metadata.homepage = app_metadata.product_dashboard_access ? homepage : "";
-        metadata = { app: app_metadata, user: user_metadata}
-    }
-    return metadata
+        }).then(res => res.json()).then(payload => {
+            return {...{ app_metadata: {}, user_metadata: {} }, ...payload.user }
+        })   
+    user_metadata.first_name = user_metadata.first_name || user.given_name;
+    user_metadata.last_name = user_metadata.last_name || user.family_name;
+    const rawId = user.user_id.includes("|") ? user.user_id.split("|")[1] : user.user_id;
+    const homepage = app_metadata.homepage || rawId;
+    app_metadata.homepage = app_metadata.product_dashboard_access ? homepage : "";
+    metadata = { app: app_metadata, user: user_metadata }
+}
+return metadata
 }
 
 const bootstrapIntegration = () => {
@@ -295,7 +297,7 @@ function computeStandardProperties() {
         }
         const msUuid = getMetadata(user)['app']['memberstack_id']
         if (msUuid) {
-            standardProperties = Object.assign(standardProperties, { 'memberstack_id': msUuid})
+            standardProperties = Object.assign(standardProperties, { 'memberstack_id': msUuid })
         }
     } else {
         standardProperties = {
@@ -316,7 +318,7 @@ window.getEventProperties = (properties) => {
         const interval = setInterval(() => {
             if (auth0Ready) {
                 window.clearInterval(interval)
-                res({...properties, ...computeStandardProperties()})
+                res({ ...properties, ...computeStandardProperties() })
             }
         }, 200)
     })
