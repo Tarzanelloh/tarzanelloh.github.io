@@ -98,7 +98,7 @@ const populateAuth0Element = (data, key, domAttribute = 'innerText') => {
 }
 
 const injectAuth0Metadata = (user) => {
-    const metadata = getMetadata(user);
+    const metadata = await getMetadata(user);
     const user_metadata = metadata.user;
     const app_metadata = metadata.app;
     if (user_metadata) {
@@ -250,7 +250,7 @@ const getHomepage = (user) => {
     if (!user) {
         return ""
     }
-    const metadata = getMetadata(user)
+    const metadata = await getMetadata(user)
     return metadata && metadata.app && metadata.app.homepage
 }
 
