@@ -98,7 +98,6 @@ const populateAuth0Element = (data, key, domAttribute = 'innerText') => {
 }
 
 const injectAuth0Metadata = (user) => {
-    const metadata = getMetadata(user);
     const user_metadata = metadata.user;
     const app_metadata = metadata.app;
     if (user_metadata) {
@@ -228,7 +227,7 @@ const handleAuth0 = async () => {
     } else {
         user = await auth0.getUser();
         token = await auth0.getTokenSilently();
-        await getMetadata(user)
+        await fetchMetadata(user)
     }
     if (isHomepage() && !isUserHomepage(user)) {
         window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a'
@@ -251,11 +250,10 @@ const getHomepage = (user) => {
     if (!user) {
         return ""
     }
-    const metadata = getMetadata(user)
     return metadata && metadata.app && metadata.app.homepage
 }
 
-const getMetadata = async (u) => {
+const fetchMetadata = async (u) => {
     if (!metadata) {
         // return u && u['https://uhubs.co.uk/metadata']
         const { user_metadata, app_metadata } = await fetch(`${config.backend}/user`, {
@@ -296,7 +294,6 @@ function computeStandardProperties() {
             'logged_in': true,
             'page': window.location.href
         }
-        await getMetadata(user)
         const msUuid = metadata.app['memberstack_id']
         if (msUuid) {
             standardProperties = Object.assign(standardProperties, { 'memberstack_id': msUuid })
