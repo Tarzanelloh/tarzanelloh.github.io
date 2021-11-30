@@ -98,7 +98,7 @@ const populateAuth0Element = (data, key, domAttribute = 'innerText') => {
 }
 
 const injectAuth0Metadata = (user) => {
-    const metadata = await getMetadata(user);
+    const metadata = getMetadata(user);
     const user_metadata = metadata.user;
     const app_metadata = metadata.app;
     if (user_metadata) {
@@ -228,6 +228,7 @@ const handleAuth0 = async () => {
     } else {
         user = await auth0.getUser();
         token = await auth0.getTokenSilently();
+        await getMetadata(user)
     }
     if (isHomepage() && !isUserHomepage(user)) {
         window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a'
@@ -250,7 +251,7 @@ const getHomepage = (user) => {
     if (!user) {
         return ""
     }
-    const metadata = await getMetadata(user)
+    const metadata = getMetadata(user)
     return metadata && metadata.app && metadata.app.homepage
 }
 
