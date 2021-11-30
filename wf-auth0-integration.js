@@ -253,7 +253,7 @@ const getHomepage = (user) => {
     return metadata && metadata.app && metadata.app.homepage
 }
 
-const fetchMetadata = async (u) => {
+const fetchMetadata = async (user) => {
     const { user_metadata, app_metadata } = await fetch(`${config.backend}/user`, {
         headers: {
             'Authorization': `Bearer ${token}`,
