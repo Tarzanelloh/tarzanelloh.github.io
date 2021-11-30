@@ -295,7 +295,8 @@ function computeStandardProperties() {
             'logged_in': true,
             'page': window.location.href
         }
-        const msUuid = getMetadata(user)['app']['memberstack_id']
+        const metadata = getMetadata(user)
+        const msUuid = metadata.app['memberstack_id']
         if (msUuid) {
             standardProperties = Object.assign(standardProperties, { 'memberstack_id': msUuid })
         }
