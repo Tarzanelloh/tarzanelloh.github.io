@@ -227,7 +227,7 @@ const handleAuth0 = async () => {
     } else {
         user = await auth0.getUser();
         token = await auth0.getTokenSilently();
-        await fetchMetadata(user)
+        metadata = await fetchMetadata(user)
     }
     if (isHomepage() && !isUserHomepage(user)) {
         window.location.href = hasHomepage(user) ? `/home-profile/${getHomepage(user)}` : '/coders51-a'
@@ -254,23 +254,19 @@ const getHomepage = (user) => {
 }
 
 const fetchMetadata = async (u) => {
-    if (!metadata) {
-        // return u && u['https://uhubs.co.uk/metadata']
-        const { user_metadata, app_metadata } = await fetch(`${config.backend}/user`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            }
-        }).then(res => res.json()).then(payload => {
-            return {...{ app_metadata: {}, user_metadata: {} }, ...payload.user }
-        })   
-        user_metadata.first_name = user_metadata.first_name || user.given_name;
-        user_metadata.last_name = user_metadata.last_name || user.family_name;
-        const rawId = user.sub.includes("|") ? user.sub.split("|")[1] : user.sub;
-        const homepage = app_metadata.homepage || rawId;
-        app_metadata.homepage = app_metadata.product_dashboard_access ? homepage : "";
-        metadata = { app: app_metadata, user: user_metadata }
-    }
-    return metadata
+    const { user_metadata, app_metadata } = await fetch(`${config.backend}/user`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    }).then(res => res.json()).then(payload => {
+        return {...{ app_metadata: {}, user_metadata: {} }, ...payload.user }
+    })   
+    user_metadata.first_name = user_metadata.first_name || user.given_name;
+    user_metadata.last_name = user_metadata.last_name || user.family_name;
+    const rawId = user.sub.includes("|") ? user.sub.split("|")[1] : user.sub;
+    const homepage = app_metadata.homepage || rawId;
+    app_metadata.homepage = app_metadata.product_dashboard_access ? homepage : "";
+    return { app: app_metadata, user: user_metadata }
 }
 
 const bootstrapIntegration = () => {
