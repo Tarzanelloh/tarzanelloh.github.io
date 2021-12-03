@@ -1,4 +1,4 @@
-injectScript("https://cdn.auth0.com/js/auth0-spa-js/1.18/auth0-spa-js.production.js").then(() => {
+injectScript("https://cdn.auth0.com/js/auth0-spa-js/1.18/auth0-spa-js.production.js").then(async () => {
     const config = {
         auth0: {
             domain: "uhubs-staging.eu.auth0.com",
