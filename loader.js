@@ -1,4 +1,4 @@
-function injectScript(src) {
+const injectScript = (src) => {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = src;
