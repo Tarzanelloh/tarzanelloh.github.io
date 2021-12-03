@@ -22,7 +22,7 @@ function loadUhubsResource(head, resourceName, type = "js") {
         case "js":
             injectScript(resourceUrl)
         case "css":
-            loadCSSResource(resourceUrl)
+            injectCss(resourceUrl)
     }
 }
 
