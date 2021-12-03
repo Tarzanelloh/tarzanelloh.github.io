@@ -1,11 +1,3 @@
-const authenticateParagon = () => {
-    auth0.getIdTokenClaims().then(async (claims) => {
-        paragon.authenticate("bf511600-aa1b-40c5-b051-d5cd917defa1", claims.__raw)
-    }).then(() => {
-        paragon.connect("salesforce")
-    })
-}
-
 let time = Date.now();
 class Auth0EventEmitter extends EventTarget {
     emit(event) {
@@ -21,12 +13,12 @@ const printTimeElapsed = (message = '') => {
 
 const config = {
     auth0: {
-        domain: "uhubs-staging.eu.auth0.com",
-        client_id: "RLaFcdBuvgXPws43E3iQkjYPCqMeR4Tq",
+        domain: "login.uhubs.co.uk",
+        client_id: "BVEBX2h9IbNhbqXHQK88wM3I4vvdMe7S",
         cacheLocation: "localstorage",
         audience: "https://api.uhubs.co.uk"
     },
-    backend: "https://api-staging.uhubs.co.uk"
+    backend: "https://api.uhubs.co.uk"
 }
 
 const toggleAuth0DependantElements = (show) => {
@@ -320,5 +312,4 @@ window.getEventProperties = (properties) => {
         }, 200)
     })
 }
-
 
