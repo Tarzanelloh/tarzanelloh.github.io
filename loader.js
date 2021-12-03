@@ -1,4 +1,4 @@
-export const injectScript = (src) => {
+const injectScript = (src) => {
     return new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = src;
@@ -8,7 +8,7 @@ export const injectScript = (src) => {
     });
 }
 
-export const injectCss = (url) => {
+const injectCss = (url) => {
     const link = document.createElement('link');
     link.rel = "stylesheet";
     link.type = "text/css";
