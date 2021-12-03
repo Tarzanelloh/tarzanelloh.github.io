@@ -1,5 +1,3 @@
-import injectScript from "./loader"
-
 const externalJsResources = [
     "https://cdn.auth0.com/js/auth0-spa-js/1.18/auth0-spa-js.production.js", // Auth0
     "https://www.googletagmanager.com/gtag/js?id=AW-622346733", // Global site tag (gtag.js) - Google Ads: 622346733
